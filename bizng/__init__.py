@@ -1,6 +1,9 @@
 from flask import Flask
 from flask_migrate import Migrate
 
+import pymysql
+pymysql.install_as_MySQLdb()
+
 def create_app():
     
     from bizng.models import db
