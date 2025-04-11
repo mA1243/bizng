@@ -15,7 +15,7 @@ def create_app():
     user=os.getenv("MYSQLUSER"),
     password=os.getenv("MYSQLPASSWORD"),
     database=os.getenv("MYSQLDATABASE"),
-    port=os.getenv("MYSQLPORT")
+    port=int(os.getenv("MYSQLPORT") or 3306)
 )
     
     db.init_app(app)
