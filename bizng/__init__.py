@@ -9,7 +9,6 @@ dotenv.load_dotenv()
 def create_app():
     
     from bizng.models import db
-    from bizng.db import conn
     
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_pyfile("config.py")
