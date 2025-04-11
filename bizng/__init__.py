@@ -9,13 +9,15 @@ def create_app():
     
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_pyfile("config.py")
+
+    print("MYSQLPORT:", os.getenv("MYSQLPORT"))
     
     app.config["MYSQL_CONN"] = conn = mysql.connector.connect(
     host=os.getenv("MYSQLHOST"),
     user=os.getenv("MYSQLUSER"),
     password=os.getenv("MYSQLPASSWORD"),
     database=os.getenv("MYSQLDATABASE"),
-    port=int(os.getenv("MYSQLPORT") or 3306)
+    port=int(os.getenv("MYSQLPORT"))
 )
     
     db.init_app(app)
