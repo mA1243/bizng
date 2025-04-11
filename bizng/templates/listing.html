@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div id="reg-main" class="container-fluid px-5 d-flex flex-column min-vh-100">
+    <h1 class="header-text">Create Your Business Listing</h1>
+    <p class="sub-header">Showcase your business to local customers in style.</p>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="alert alert-warning">
+                {% for message in messages %}
+                    <div>{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Business Details -->
+    <form method="POST" enctype="multipart/form-data" class="flex-grow-1" id="listingForm">
+        {{ listingform.csrf_token }}
+
+        <div class="card">
+            <div class="image-upload">
+                {{ listingform.businessimg.label(class_="form-label") }}
+                {{ listingform.businessimg(class_="form-control") }}
+            </div>
+        </div>
+
+        <div class="card">
+            {{ listingform.name.label(class_="form-label") }}
+            {{ listingform.name(class_="form-control", placeholder="e.g. Mama Ofe Restaurant") }}
+        </div>
+
+        <div class="card">
+            {{ listingform.email.label(class_="form-label") }}
+            {{ listingform.email(class_="form-control", placeholder="e.g. mamaofe@example.com") }}
+        </div>
+
+        <div class="card">
+            {{ listingform.category.label(class_="form-label") }}
+            {{ listingform.category(class_="form-select register_category") }}
+        </div>
+
+        <!-- Business Description -->
+        <div class="card">
+            {{ listingform.description.label(class_="form-label") }}
+            {{ listingform.description(class_="form-control", rows="3", placeholder="We serve the best amala, ewedu, and gbegiri in Lagos!") }}
+        </div>
+
+        <div class="card">
+            {{ listingform.phoneno.label(class_="form-label") }}
+            {{ listingform.phoneno(class_="form-control", placeholder="e.g., +234 803 456 7890") }}
+        </div>
+
+        <div class="card">
+            {{ listingform.website.label(class_="form-label") }}
+            {{ listingform.website(class_="form-control", placeholder="e.g., https://mamaofe.com.ng") }}
+        </div>
+
+        <div class="card">
+            {{ listingform.state.label(class_="form-label") }}
+            {{ listingform.state(class_="form-select register_state", onchange="updateLGAs()") }}
+        </div>
+
+        <div class="card">
+            {{ listingform.lga.label(class_="form-label") }}
+            {{ listingform.lga(class_="form-select register_lga") }}
+        </div>
+
+        <!-- Google Maps Location Picker -->
+        <div class="card">
+            {{ listingform.address.label(class_="form-label") }}
+            {{ listingform.address(class_="form-control mb-2", id="locationSearch", placeholder="Search location") }}
+            <div class="row mb-3">
+                <div class="col-6">
+                    {{ listingform.longitude(class_="form-control", id="longitude", readonly=True, placeholder="Longitude") }}
+                </div>
+                <div class="col-6">
+                    {{ listingform.latitude(class_="form-control", id="latitude", readonly=True, placeholder="Latitude") }}
+                </div>
+            </div>
+    
+            <div id="map"></div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center mb-4 pb-5">
+            {{ listingform.submit(class_="btn btn-danger mt-3") }}
+        </div>
+    </form>
+</div>
+
+<style>
+    footer {
+        position: relative;
+        top: 6vh;
+    }
+</style>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key={{api_key}}&libraries=places&callback=initMap"></script>
+
+{% endblock %}

@@ -1,0 +1,367 @@
+header {
+    background-image: url("./img/bg1.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    width: 98.8vw;
+    background-color: #0000009b;
+}
+
+aside {
+    width: 40vw; /* Takes up 40% of the screen */
+    height: 100vh;
+    background-image: url("./img/bg-nav.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-color: rgba(0, 0, 0, 0.523);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Playfair Display", serif !important;
+}
+
+p, span , a, button{
+    font-family: "Karla", sans-serif !important;
+}
+
+a:hover{
+    color:  red !important;
+}
+
+.aside-overlay {
+    width: 40vw; /* Takes up 40% of the screen */
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.482);
+}
+
+.overlay {
+    background-color: #0000006d;
+    height: inherit;
+    width: inherit;
+}
+
+.heading h1, .heading h4 {
+    text-shadow: 2px 1px 1px black;
+}
+
+.custom-navbar a {
+    color: white;
+}
+
+.custom-active {
+    text-decoration: underline;
+}
+
+.custom-scroll {
+    overflow-y: scroll;
+    height: 100vh;
+}
+
+.home-img {
+    height: 400px;
+}
+
+.home-card {
+    height:  40vh;
+}
+
+.business-card {
+    background: #fff;
+    color: #000;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    margin: auto;
+    max-width: 350px;
+}
+
+.business-card-bpage {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.business-name {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.business-image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+
+.container {
+    position: relative;
+    top: -5vh;
+}
+
+.bpage-container {
+    display: flex;
+    height: 100vh;
+    padding: 0;
+}
+
+.banner{
+    height: 30vh;
+    background-image: url("./img/bg1.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+
+.banner h1{
+    text-shadow: 2px 2px 2px black;
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.noscroll {
+    overflow: hidden;
+}
+
+.logreg-card {
+    width: 100%;
+    max-width: 400px; /* Prevents card from stretching too much */
+    height: fit-content;
+}
+
+.error-height {
+    height: 82.5vh;
+    overflow: hidden;
+}
+
+.form-control {
+    border-radius: 8px;
+}
+
+.tabs {
+    border-bottom: none;
+}
+
+.tab-item {
+    width: 50%;
+    text-align: center;
+}
+
+.tab-link {
+    width: 100%;
+    border-radius: 10px;
+    font-size: 18px;
+    text-decoration: none;
+}
+
+.logreg {
+    display: flex;
+    height: 100vh;
+    padding: 0;
+}
+
+.main {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-container {
+    max-width: 75vw;
+    margin: 50px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar {
+    height: 90vh;
+    position: fixed;
+    top: 15vh;
+    left: 1vw;
+    background-color: #f8f9fa;
+}
+.main-content {
+    position: relative;
+    left: 27%;
+    top: 15vh;
+    height: 100vh;
+}
+
+.sidebar-bpage {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.custom-height {
+    height: 75vh;
+}
+
+.custom-navbar {
+    background-color: #000000c5;
+}
+
+.header-text {
+    color: #d32f2f; /* Red text */
+    font-weight: bold;
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6); /* Black shadow */
+}
+
+.sub-header {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #666;
+}
+
+
+.image-preview {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border: 3px solid #000;
+    border-radius: 12px;
+    display: none;
+    margin-bottom: 10px;
+}
+
+.review {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+.table th {
+    background-color: red;
+    color: white;
+}
+
+.social-icons a {
+    margin: 10px;
+    font-size: 24px;
+    color: black;
+}
+
+.social-icons a:hover {
+    color: red;
+}
+
+.contact-info i {
+    color: red;
+}
+
+#home-five {
+    background-image: url("./img/bg2.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+
+#home-five h1, #home-five h4 {
+    text-shadow: 2px 1px 1px black;
+}
+
+#locationFilter {
+    max-width: 300px;
+    margin: auto;
+}
+
+
+#reg-main {
+    position: relative;
+    top: 15vh;
+}
+
+/* Rating styles */
+.rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+.rating input {
+    display: none;
+}
+
+.rating label {
+    cursor: pointer;
+    font-size: 1.5rem;
+    padding: 0 0.1em;
+    color: #ddd;
+}
+
+.rating input:checked ~ label,
+.rating label:hover,
+.rating label:hover ~ label {
+    color: #ffc107;
+}
+
+.rating input:checked + label:hover,
+.rating input:checked ~ label:hover,
+.rating input:checked ~ label:hover ~ label,
+.rating label:hover ~ input:checked ~ label {
+    color: #ffc107;
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+}
+.card-header {
+    border-top-left-radius: 10px !important;
+    border-top-right-radius: 10px !important;
+}
+.list-group-item {
+    border: none;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.25rem;
+    border-radius: 0.5rem;
+}
+.list-group-item.active {
+    background-color: var(--bs-danger);
+    border-color: var(--bs-danger);
+}
+.list-group-item:not(.active):hover {
+    background-color: var(--bs-danger-bg-subtle);
+}
+.page-link {
+    color: var(--bs-danger);
+    border-color: var(--bs-danger);
+}
+.page-item.active .page-link {
+    background-color: var(--bs-danger);
+    border-color: var(--bs-danger);
+}
+.page-item.disabled .page-link {
+    color: var(--bs-secondary);
+    border-color: var(--bs-secondary);
+}
+
+#map {
+    height: 45vh;
+     width: 100%; 
+     margin-top: 20px; 
+     border-radius: 8px;
+     position: relative;
+    z-index: 1;
+}
+
+body {
+    overflow-x: hidden;
+}

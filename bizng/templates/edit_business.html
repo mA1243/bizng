@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container-fluid py-4 mt-5 pt-3">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h4 class="card-title mb-0">Edit Business: {{ business.name }}</h4>
+                </div>
+                
+                <div class="card-body">
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-warning">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <form method="POST" enctype="multipart/form-data" id="editForm">
+                        {{ form.csrf_token }}
+
+                        <!-- Current Image Preview -->
+                        <div class="text-center mb-4">
+                            {% if business.img %}
+                                <img src="{{url_for('static', filename='businessimg/' + business.img)}}"
+                                     class="img-fluid rounded mb-2"
+                                     alt="{{ business.name }}"
+                                     style="max-height: 200px;">
+                            {% endif %}
+                            <div class="mt-2 text-start">
+                                {{ form.businessimg.label(class_="form-label") }}
+                                {{ form.businessimg(class_="form-control") }}
+                            </div>
+                        </div>
+
+                        <!-- Business Details -->
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                {{ form.name.label(class_="form-label") }}
+                                {{ form.name(class_="form-control") }}
+                            </div>
+                            
+                            <div class="col-md-6">
+                                {{ form.email.label(class_="form-label") }}
+                                {{ form.email(class_="form-control") }}
+                            </div>
+
+                            <div class="col-md-6">
+                                {{ form.phoneno.label(class_="form-label") }}
+                                {{ form.phoneno(class_="form-control") }}
+                            </div>
+
+                            <div class="col-md-6">
+                                {{ form.website.label(class_="form-label") }}
+                                {{ form.website(class_="form-control") }}
+                            </div>
+
+                            <div class="col-12">
+                                {{ form.description.label(class_="form-label") }}
+                                {{ form.description(class_="form-control", rows="4") }}
+                            </div>
+
+                            <div class="col-md-6">
+                                {{ form.category.label(class_="form-label") }}
+                                {{ form.category(class_="form-select") }}
+                            </div>
+
+                            <div class="col-md-6">
+                                {{ form.state.label(class_="form-label") }}
+                                {{ form.state(class_="form-select", onchange="updateLGAs()") }}
+                            </div>
+
+                            <div class="col-md-12">
+                                {{ form.lga.label(class_="form-label") }}
+                                {{ form.lga(class_="form-select", id="lga") }}
+                            </div>
+
+                            <!-- Location Picker -->
+                            <div class="col-12">
+                                {{ form.address.label(class_="form-label") }}
+                                {{ form.address(class_="form-control mb-2", id="locationSearch", placeholder="Search location") }}
+                                
+                                <div class="row mb-3">
+                                    <div class="col-6">
+                                        {{ form.longitude(class_="form-control", id="longitude", readonly=True) }}
+                                    </div>
+                                    <div class="col-6">
+                                        {{ form.latitude(class_="form-control", id="latitude", readonly=True) }}
+                                    </div>
+                                </div>
+
+                                <div id="map" style="height: 400px; width: 100%; border-radius: 8px;"></div>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <a href="{{ url_for('profile') }}" class="btn btn-outline-secondary">Cancel</a>
+                            {{ form.submit(class_="btn btn-danger") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById("category").value = "{{business.category_id}}"
+    document.getElementById("state").value = "{{business.state_id}}"
+    document.getElementById("lga").value = "{{business.lga_id}}"
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key={{api_key}}&libraries=places&callback=initMap"></script>
+{% endblock %} 

@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% block body%}
+{% endblock %}
+{% block content %}
+
+<div class="container-fluid py-4">
+    <div class="row g-4">
+        <!-- Sidebar -->
+        {%with messages = get_flashed_messages() %}
+        {% for message in messages %}
+        <h4 class="text-center text-danger p-3"> {{message}} </h4>
+        {% endfor %}
+        {% endwith%}
+        <div class="col-12 col-lg-3 mt-5 pt-5">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    {% if user.dp %}
+                        <img src="{{url_for('static', filename='userimg/' + user.dp)}}" 
+                             class="rounded-circle img-fluid mb-3" 
+                             alt="User Profile"
+                             style="width: 150px; height: 150px; object-fit: cover;">
+                    {% else %}
+                        <img src="{{url_for('static', filename='userimg/default-business.jpg')}}" 
+                             class="rounded-circle img-fluid mb-3" 
+                             alt="Default Profile"
+                             style="width: 150px; height: 150px; object-fit: cover;">
+                    {% endif %}
+                    <h4 class="mb-1">{{ user.first_name }} {{ user.last_name }}</h4>
+                    <p class="text-muted mb-3">{{ user.email }}</p>
+                    <a href="{{ url_for('edit_profile') }}" class="btn btn-outline-danger btn-sm">Edit Profile</a>
+                </div>
+                
+                <div class="card-body border-top">
+                    <h6 class="mb-3">⚡ Quick Actions</h6>
+                    <div class="list-group list-group-flush">
+                        <a href="{{ url_for('register') }}" class="list-group-item list-group-item-action">
+                            <i class="fas fa-plus-circle text-danger"></i> Add New Business
+                        </a>
+                        <a href="#businessListings" class="list-group-item list-group-item-action">
+                            <i class="fas fa-building text-danger"></i> Manage Listings
+                        </a>
+                        <a href="#reviews" class="list-group-item list-group-item-action">
+                            <i class="fas fa-star text-danger"></i> View Reviews
+                        </a>
+                        <a href="{{ url_for('logout') }}" class="list-group-item list-group-item-action text-danger">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-12 col-lg-9 mt-5 pt-5">
+            <!-- Business Statistics -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-6">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h6 class="card-subtitle mb-2 text-muted">Total Businesses</h6>
+                            <h2 class="card-title mb-0">{{ businesses|length }}</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h6 class="card-subtitle mb-2 text-muted">Total Reviews</h6>
+                            <h2 class="card-title mb-0">{{ total_reviews }}</h2>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            <!-- Business Listings -->
+            <div class="card shadow-sm mb-4" id="businessListings">
+                <div class="card-header bg-white">
+                    <h5 class="card-title mb-0">🏢 Your Business Listings</h5>
+                </div>
+                <div class="card-body">
+                    {% if businesses %}
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Business</th>
+                                        <th>Category</th>
+                                        <th>Location</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for business in businesses %}
+                                    <tr data-business-id="{{ business.id }}">
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                {% if business.img_b64 %}
+                                                    <img src="data:image/jpeg;base64,{{ business.img_b64 }}" 
+                                                         class="rounded me-2" 
+                                                         alt="{{ business.name }}"
+                                                         style="width: 40px; height: 40px; object-fit: cover;">
+                                                {% endif %}
+                                                <div>
+                                                    <h6 class="mb-0">{{ business.name }}</h6>
+                                                    <small class="text-muted">{{ business.email }}</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>{{ business.category.name }}</td>
+                                        <td>
+                                            <small>{{ business.address }}<br>
+                                            {{ business.state.name }}</small>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a href="{{ url_for('listing', business_id=business.id) }}" 
+                                                   class="btn btn-sm btn-outline-dark"
+                                                   title="View {{ business.name }}">
+                                                    <i class="fas fa-eye"></i>
+                                                    <span class="visually-hidden">View {{ business.name }}</span>
+                                                </a>
+                                                <a href="{{ url_for('edit_business', business_id=business.id) }}"
+                                                   class="btn btn-sm btn-outline-primary"
+                                                   title="Edit {{ business.name }}">
+                                                    <i class="fas fa-edit"></i>
+                                                    <span class="visually-hidden">Edit {{ business.name }}</span>
+                                                </a>
+                                                <button class="btn btn-sm btn-outline-danger"
+                                                        title="Delete {{ business.name }}"
+                                                        onclick="userDeleteBusiness('{{ business.id }}', '{{ business.name }}')">
+                                                    <i class="fas fa-trash"></i>
+                                                    <span class="visually-hidden">Delete {{ business.name }}</span>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <p class="text-muted mb-3">You haven't added any businesses yet.</p>
+                            <a href="{{ url_for('register') }}" class="btn btn-danger">
+                                <i class="fas fa-plus-circle"></i> Add Your First Business
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Recent Reviews -->
+            <div class="card shadow-sm" id="reviews">
+                <div class="card-header bg-white">
+                    <h5 class="card-title mb-0">📝 Recent Reviews</h5>
+                </div>
+                <div class="card-body">
+                    {% set has_reviews = false %}
+                    {% for business in businesses %}
+                        {% for review in business.reviews[:3] %}  <!-- Show only 3 most recent reviews per business -->
+                            {% set has_reviews = true %}
+                            {% if not has_reviews %}
+                                <p class="text-center text-muted my-4">No reviews yet.</p>
+                            {% else %}
+                            <div class="review mb-3 pb-3 border-bottom">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h6 class="mb-1">{{ business.name }}</h6>
+                                        <p class="mb-1">
+                                            By <strong>{{ review.name }}</strong>
+                                        </p>
+                                        <p class="mb-1">{{ review.comment }}</p>
+                                        <small class="text-muted">{{ review.date_reviewed.strftime('%B %d, %Y') }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

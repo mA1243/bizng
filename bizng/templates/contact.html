@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="my-5 mx-5 px-5 pt-3">
+    <div class="text-center my-3">
+        <h2 class="text-danger ">We Value Your Feedback – Share Your Thoughts With Us</h2>
+        <h5>Help Us Improve by Sending Your Questions, Suggestions, or Concerns</h5>
+        {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+            {% if message %}
+                <h6 class="mt-3"> {{message}} </h6>
+            {% endif%}
+        {% endfor %}
+    {% endwith %}
+    </div>
+    
+    <div class="form-container bg-light p-4 mx-auto mt-4">
+        <h2 class="text-center">Contact Us</h2>
+        <form class="mx-5" method="POST">
+            {{contactform.csrf_token}}
+            <div class="mb-3 text-start">
+                {{contactform.name.label(class_="form-label")}}
+                {{contactform.name(class_="form-control", placeholder="Enter name")}}
+                {% if contactform.name.errors %}
+                {% for error in contactform.fullname.errors %}
+                <span class="text-danger">{{error}}</span>
+                {% endfor %}
+                {% endif %}
+            </div>
+            <div class="mb-3 text-start">
+                {{contactform.email.label(class_="form-label")}}
+                {{contactform.email(class_="form-control", placeholder="Enter email")}}
+                {% if contactform.name.errors %}
+                {% for error in contactform.email.errors %}
+                <span class="text-danger">{{error}}</span>
+                {% endfor %}
+                {% endif %}
+            </div>
+            <div class="mb-3 text-start">
+                {{contactform.subject.label(class_="form-label")}}
+                {{contactform.subject(class_="form-control", placeholder="Enter subject")}}
+                {% if contactform.name.errors %}
+                {% for error in contactform.subject.errors %}
+                <span class="text-danger">{{error}}</span>
+                {% endfor %}
+                {% endif %}
+            </div>
+            <div class="mb-3 text-start">
+                {{contactform.message.label(class_="form-label")}}
+                {{contactform.message(class_="form-control", placeholder="Enter message")}}
+                {% if contactform.name.errors %}
+                {% for error in contactform.message.errors %}
+                <span class="text-danger">{{error}}</span>
+                {% endfor %}
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                {{contactform.submit(class_="btn btn-danger w-100")}}
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

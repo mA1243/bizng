@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Main Content -->
+<div class="container mt-5 pt-5">
+    <div class="row">
+        <!-- Main Content -->
+        <div class="col-md-8">
+            {% with messages = get_flashed_messages() %}
+                    {% for message in messages %}
+                    <h4 class="text-center text-danger p-3"> {{ message }} </h4>
+                    {% endfor %}
+                    {% endwith %}
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h1 class="business-name">{{ business.name }}</h1>
+                    {% if business.img %}
+                        <img src="{{url_for('static', filename='businessimg/' + business.img)}}" 
+                             alt="{{ business.name }}" 
+                             class="business-image img-fluid mb-3 rounded shadow-sm"
+                             style="height: 300px; width: 700px; ">
+                    {% endif %}
+                    <p class="text-muted">{{ business.description }}</p>
+
+                    <div class="contact-info">
+                        <p><i class="fas fa-map-marker-alt text-danger"></i> {{ business.address }}, {{ business.state.name }}</p>
+                        <p><i class="fas fa-phone-alt text-danger"></i> <a href="tel:{{ business.phoneno }}" class="text-dark">{{ business.phoneno }}</a></p>
+                        <p><i class="fas fa-envelope text-danger"></i> <a href="mailto:{{ business.email }}" class="text-dark">{{ business.email }}</a></p>
+                        <p><i class="fas fa-tag text-danger"></i> {{ business.category.name }}</p>
+                    </div>
+
+                    <div class="mt-3">
+                        {% if business.website %}
+                        <a href="{{ business.website }}" target="_blank" rel="noopener" class="btn btn-danger">Visit Website</a>
+                        {% endif %}
+                        <a href="https://www.google.com/maps?q={{ business.latitude }},{{ business.longitude }}" 
+                           target="_blank" rel="noopener" class="btn btn-outline-dark">
+                           <i class="fas fa-map-marker-alt"></i> Get Directions
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customer Reviews -->
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4>Customer Reviews</h4>
+                    
+                    {% if business.reviews %}
+                        {% for review in business.reviews %}
+                        <div class="review text-start d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>{{ review.name }}</strong>
+                                <p class="mb-0">{{ review.comment }}</p>
+                                <small class="text-muted">{{ review.date_reviewed.strftime('%B %d, %Y') }}</small>
+                            </div>
+                            <button class="btn btn-outline-danger btn-sm ms-3" onclick="showReportModal('review', '{{ review.id }}')">
+                                <i class="fas fa-flag"></i> Report
+                            </button>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">No reviews yet. Be the first to review!</p>
+                    {% endif %}
+                    <button class="btn btn-danger mt-3" data-bs-toggle="modal" data-bs-target="#writeReviewModal">
+                        <i class="fas fa-star"></i> Write a Review
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h4 class="card-title">Location</h4>
+                    <div class="position-relative">
+                        <img 
+                            src="https://maps.googleapis.com/maps/api/staticmap?center={{ business.latitude }},{{ business.longitude }}&zoom=15&size=400x300&markers=color:red%7C{{ business.latitude }},{{ business.longitude }}&key={{ api_key }}"
+                            alt="Business Location"
+                            class="img-fluid rounded shadow-sm mb-2"
+                        >
+                        <a href="https://www.google.com/maps?q={{ business.latitude }},{{ business.longitude }}" 
+                           target="_blank" 
+                           rel="noopener" 
+                           class="btn btn-sm btn-danger position-absolute bottom-0 end-0 m-2">
+                            <i class="fas fa-external-link-alt"></i> Open in Google Maps
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h4 class="card-title">Contact Information</h4>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-phone-alt text-danger"></i> {{ business.phoneno }}</li>
+                        <li><i class="fas fa-envelope text-danger"></i> 
+                            <a href="mailto:{{ business.email }}" class="text-dark">{{ business.email }}</a>
+                        </li>
+                        {% if business.website %}
+                        <li><i class="fas fa-globe text-danger"></i> 
+                            <a href="{{ business.website }}" target="_blank" rel="noopener">{{ business.website }}</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <button class="btn btn-outline-danger w-100" onclick="showReportModal('business', '{{ business.id }}')">
+                        <i class="fas fa-flag"></i> Report Business
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block modal %}
+<!-- Review Modal -->
+<div class="modal fade" id="writeReviewModal" tabindex="-1" aria-labelledby="writeReviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="">
+                <input type="hidden" name="action" id="review" value="review">
+                {{ reviewform.csrf_token }}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="writeReviewModalLabel">Write a Review</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        {{ reviewform.name.label(class_="form-label") }}
+                        {{ reviewform.name(class_="form-control", placeholder="Enter your name") }}
+                    </div>
+                    <div class="mb-3">
+                        {{ reviewform.comment.label(class_="form-label") }}
+                        {{ reviewform.comment(class_="form-control", placeholder="Write your review") }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                    {{ reviewform.submit(class_="btn btn-danger") }}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Report Modal -->
+<div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="">
+                {{ reportform.csrf_token }}
+                <input type="hidden" name="action" id="report" value="report">
+                {{ reportform.report_type(class_="form-control", type="hidden", id="reportTypeField") }}
+                {{ reportform.report_id(class_="form-control", type="hidden", id="reportIdField") }}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reportModalLabel">Make A Report</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        {{ reportform.reason.label(class_="form-label") }}
+                        {{ reportform.reason(class_="form-select") }}
+                    </div>
+                    <div class="mb-3">
+                        {{ reportform.details.label(class_="form-label") }}
+                        {{ reportform.details(class_="form-control", placeholder="Provide details about your report") }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                    {{ reportform.submit(class_="btn btn-danger") }}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

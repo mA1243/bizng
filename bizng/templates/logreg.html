@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid logreg">
+
+    <aside class="d-none d-sm-block">
+        <div class="aside-overlay"></div>
+    </aside>
+
+    <main class="mt-5 pt-5 main">
+        <div class="card p-4 logreg-card">
+            {%with messages = get_flashed_messages() %}
+            {% for message in messages %}
+            <h4 class="text-center text-danger p-3"> {{message}} </h4>
+            {% endfor %}
+            {% endwith%}
+            <ul class="nav tabs" id="authTabs">
+                <li class="tab-item">
+                    <a class="tab-link active text-dark btn" id="loginTab">Login</a>
+                </li>
+                <li class="tab-item">
+                    <a class="tab-link text-dark btn" id="registerTab">Register</a>
+                </li>
+            </ul>
+
+            <!-- Login Form -->
+            <form id="loginForm" method="POST">
+                {{loginform.csrf_token}}
+                <input type="hidden" name="action" value="login">
+                <h4 class="text-center my-3">Login</h4>
+                <div class="mb-3">
+                    {{loginform.email.label(class_="form-label")}}
+                    {{loginform.email(class_="form-control", placeholder="Email")}}
+                    {% if loginform.email.errors %}
+                    {% for error in loginform.email.errors %}
+                    <span class="text-danger">{{error}}</span>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    {{loginform.password.label(class_="form-label")}}
+                    {{loginform.password(class_="form-control", placeholder="Password")}}
+                    {% if loginform.password.errors %}
+                    {% for error in loginform.password.errors %}
+                    <span class="text-danger">{{error}}</span>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                {{loginform.login(class_="btn btn-danger w-100")}}
+            </form>
+
+            <!-- Register Form -->
+            <form id="registerForm" class="d-none" method="POST">
+                {{regform.csrf_token}}
+                <input type="hidden" name="action" value="register">
+                <h4 class="text-center my-3">Register</h4>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        {{regform.firstname.label()}}
+                        {{regform.firstname(class_="form-control", placeholder="First Name")}}
+                        {% if regform.firstname.errors %}
+                        {% for error in regform.email.errors %}
+                        <span class="text-danger">{{error}}</span>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{regform.lastname.label()}}
+                        {{regform.lastname(class_="form-control", placeholder="Last Name")}}
+                        {% if regform.lastname.errors %}
+                        {% for error in regform.lastname.errors %}
+                        <span class="text-danger">{{error}}</span>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="mb-3">
+                    {{regform.email.label()}}
+                    {{regform.email(class_="form-control", placeholder="Email")}}
+                    {% if regform.email.errors %}
+                    {% for error in regform.email.errors %}
+                    <span class="text-danger">{{error}}</span>
+                    {% endfor %}
+                    {% endif %} 
+                </div>
+                <div class="mb-3">
+                    {{regform.password.label()}}
+                    {{regform.password(class_="form-control", placeholder="Password")}}
+                    {% if regform.password.errors %}
+                    {% for error in regform.password.errors %}
+                    <span class="text-danger">{{error}}</span>
+                    {% endfor %}
+                    {% endif %} 
+                </div>
+                <div class="mb-3">
+                    {{regform.confirm_password.label()}}
+                    {{regform.confirm_password(class_="form-control", placeholder="Confirm Password")}}
+                    {% if regform.confirm_password.errors %}
+                    {% for error in regform.confirm_password.errors %}
+                    <span class="text-danger">{{error}}</span>
+                    {% endfor %}
+                    {% endif %} 
+                </div>
+                {{regform.register(class_="btn btn-danger w-100")}}
+            </form>
+        </div>
+    </main>
+</div>
+
+
+{% endblock %}

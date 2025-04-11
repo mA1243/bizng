@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container-fluid py-4 mt-5 pt-3">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h4 class="card-title mb-0">Edit Profile</h4>
+                </div>
+                
+                <div class="card-body">
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-warning">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    {% if user.dp %}
+                    <div class="text-center">
+                        <img src="{{url_for('static', filename='userimg/' + user.dp)}}" 
+                             class="rounded-circle img-fluid mb-3" 
+                             alt="User Profile"
+                             style="width: 150px; height: 150px; object-fit: cover;">
+                    </div>
+                        
+                    {% else %}
+                    <div class="text-center">
+                        <img src="{{url_for('static', filename='userimg/default-business.jpg')}}" 
+                             class="rounded-circle img-fluid mb-3" 
+                             alt="Default Profile"
+                             style="width: 150px; height: 150px; object-fit: cover;">
+                    </div>
+                        
+                    {% endif %}
+
+                    <form method="POST" enctype="multipart/form-data" id="editProfileForm novalidate">
+                        {{ form.csrf_token }}
+
+                        <!-- Personal Information -->
+                        <div class="mb-4">
+                            <h5 class="mb-3">Personal Information</h5>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    {{ form.dp.label(class_="form-label") }}
+                                    {{ form.dp(class_="form-control") }}
+                                </div>
+
+                                <div class="col-md-6">
+                                    {{ form.firstname.label(class_="form-label") }}
+                                    {{ form.firstname(class_="form-control") }}
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    {{ form.lastname.label(class_="form-label") }}
+                                    {{ form.lastname(class_="form-control") }}
+                                </div>
+                                
+                                <div class="col-12">
+                                    {{ form.email.label(class_="form-label") }}
+                                    {{ form.email(class_="form-control") }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Change Password -->
+                        <div class="mb-4">
+                            <h5 class="mb-3">Change Password</h5>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    {{ form.change_password.label(class_="form-label") }}
+                                    {{ form.change_password(class_="form-control") }}
+                                    
+                                </div>
+                                <div class="col-12">
+                                    {{ form.confirm_change_password.label(class_="form-label") }}
+                                    {{ form.confirm_change_password(class_="form-control") }}
+                                    <small class="text-muted">Required only if changing password</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Delete Account -->
+                        <div class="mb-4">
+                            <h5 class="text-danger mb-3">Danger Zone</h5>
+                            <p class="text-muted">Once you delete your account, there is no going back. Please be certain.</p>
+                            <button type="button" class="btn btn-outline-danger" onclick="confirmDelete()">
+                                Delete Account
+                            </button>
+                        </div>
+
+                        <!-- Submit Buttons -->
+                        <div class="text-center">
+                            <a href="{{ url_for('profile') }}" class="btn btn-outline-secondary me-2">Cancel</a>
+                            {{ form.confirm(class_="btn btn-danger") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

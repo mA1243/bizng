@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="banner text-light pt-5">
+    <div class="overlay pt-5">
+        <h1 class="mt-3 text-center">Find your Business</h1>
+    </div>
+</div>
+
+<div class="container mt-0 pt-0 ms-sm-5 ps-sm-5 text-center">
+    {%with messages = get_flashed_messages() %}
+    {% for message in messages %}
+    <h4 class="text-center text-danger p-3"> {{message}} </h4>
+    {% endfor %}
+    {% endwith%}
+    <form action="{{ url_for('search') }}" method="GET">
+        <!-- Search Bar -->
+        <div class="input-group my-3 justify-content-center mx-auto shadow">
+            {{ searchform.query(class_="form-control", placeholder="Search for businesses...") }}
+            <div class="btn btn-danger">
+                <i class="fas fa-search"></i>
+                {{ searchform.search(class_="bg-transparent text-white border-0") }}
+            </div>
+        </div>
+
+        <!-- Filter by Location -->
+        <div class="mb-3">
+            <h5>Filter by Location:</h5>
+            <div class="row">
+                <div class="col">
+                    {{ searchform.state(class_="form-select register_state") }}
+                </div>
+                <div class="col">
+                    {{ searchform.lga(class_="form-select register_lga") }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter by Category -->
+        <div class="mb-3 col-6 offset-3">
+            <h5>Filter by Category:</h5>
+            {{ searchform.category(class_="form-select register_category") }}
+            {{ searchform.filter(class_="btn btn-outline-danger mt-3 px-3") }}
+            <a href="{{url_for('search')}}" class="btn btn-outline-danger mt-3">Remove Filters</a>
+        </div>
+
+        <!-- Sort by Name -->
+        <div class="col-md-4 mx-auto">
+            <a href="{{ url_for('search', category=selected_category, state=selected_state, lga=selected_lga, sort='asc') }}"
+                class="btn btn-outline-dark {% if sort_order == 'asc' %}active{% endif %}">
+                <i class="fas fa-sort-alpha-down"></i> Sort Asc
+            </a>
+            <a href="{{ url_for('search', category=selected_category, state=selected_state, lga=selected_lga, sort='desc') }}"
+                class="btn btn-outline-dark {% if sort_order == 'desc' %}active{% endif %}">
+                <i class="fas fa-sort-alpha-up"></i> Sort Desc
+            </a>
+        </div>
+    </form>
+
+    <!-- Business List -->
+    <div class="row justify-content-center" id="businessList">
+        {% if businesses %}
+            {% for business in businesses %}
+            <div class="col-md-4 business py-5 text-center">
+                <div class="shadow rounded py-3 px-5">
+                    <h5 class="py-1">{{ business.name }}</h5>
+                    <p><strong>Category:</strong> {{ business.category.name }}</p>
+                    <p><strong>Location:</strong> {{ business.state.name }}</p>
+                    <p><strong>Phone:</strong> {{ business.phoneno }}</p>
+                    <a href="{{ url_for('listing', business_id=business.id) }}" class="btn btn-danger">View Business</a>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-center mt-5">No results found.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
